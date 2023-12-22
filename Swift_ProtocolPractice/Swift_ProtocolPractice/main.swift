@@ -112,4 +112,73 @@ struct Person: Ownerable {
 
 var bichon = Bichon()
 
+// MARK: - 활동학습
+/*
+ Protocol 구현하기
+ Step 1 : 내가 사장이라면, 내 비서는 이런일을 해줬으면 좋겠다 상상하기
+ Step 2 : 상상한 것을 프로토콜로 표현해보기
+ Step 3 : 비서 프로토콜을 따르는 타입 3개 만들어보기
+ Step 4 : 사장 타입 만들어보기
+*/
+@objc
+protocol Assistant {
+    var name: String { get }
+    func alertDailyReport()
+    func alertTIL()
+    @objc optional func leave()
+}
 
+extension Assistant {
+    func alertDailyReport() {
+        print("\(name): 야호! 벌써 5시에요! 일일회고 작성해주세요!")
+    }
+    
+    func alertTIL() {
+        print("\(name): 야호! 벌써 5시에요! TIL 작성해주세요!")
+    }
+}
+
+class MecaDio: Assistant {
+    var name: String = "디오봇"
+}
+
+class MecaTaco: Assistant {
+    var name: String = "타코봇"
+}
+
+class MecaJamking: Assistant {
+    var name: String = "잼킹봇"
+}
+
+class Boss {
+    var name: String
+    
+    init(name: String) {
+        self.name = name
+    }
+    
+    func hire(assistant: Assistant) {
+        print("\(name)(이)가 \(assistant.name) 채용!")
+    }
+    func makeWork(to assistant: Assistant) {
+        assistant.alertDailyReport()
+        assistant.alertTIL()
+    }
+}
+
+let dioBot: Assistant = MecaDio()
+let dio = Boss(name: "디오")
+dio.hire(assistant: dioBot)
+dio.makeWork(to: dioBot)
+
+let jamkingBot: Assistant = MecaJamking()
+let jamking = Boss(name: "잼킹")
+jamking.hire(assistant: jamkingBot)
+jamking.makeWork(to: jamkingBot)
+
+let tacoBot: Assistant = MecaTaco()
+let tacoCat = Boss(name: "타코캣")
+tacoCat.hire(assistant: tacoBot)
+tacoCat.hire(assistant: dioBot)
+tacoCat.makeWork(to: tacoBot)
+tacoCat.makeWork(to: dioBot)
